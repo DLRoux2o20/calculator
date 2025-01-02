@@ -1,10 +1,11 @@
-let number1 = 3;
-let operatorSign = "+";
-let number2 = 5;
+let number1 = false;
+let operatorSign = false;
+let number2 = false;
 let screenText = document.getElementById("screenText");
 let lastClickWasDigit = false;
 let lastClickWasOperator = false;
 let firstClickHappened = false;
+let firstNumber = true;
 let lastButtonClicked = document.getElementById("clearButton");
 
 let numberButtons = document.getElementsByClassName("numberButton");
@@ -18,10 +19,14 @@ clearButton.addEventListener("click", () => {
     lastClickWasDigit = false;
     lastClickWasOperator = false;
     firstClickHappened = false;
+    firstNumber = true;
+    number1 = false;
+    operatorSign = false;
+    number2 = false;
 });
 
 function numberButtonClicked(digit) {
-    if (lastClickWasOperator === true) {
+    if (lastClickWasOperator) {
         screenText.textContent = "";
     }
 
@@ -35,46 +40,57 @@ function numberButtonClicked(digit) {
 }
 
 function functionButtonClicked(operator) {
-    if (lastClickWasDigit === false) {
+    if (!lastClickWasDigit) {
         lastButtonClicked.removeAttribute("style");
+    } else {
+        if (firstNumber) {
+            number1 = Number(screenText.textContent);
+            firstNumber = false;
+        } else {
+            number2 = Number(screenText.textContent);
+            firstNumber = true;
+        }
     }
 
-    if (firstClickHappened === true) {
+    if (number1 !== false && operatorSign !== false && number2 !== false) {
+        number1 = operate(number1, operatorSign, number2);
+        screenText.textContent = number1;
+        firstNumber = false;
+    }
+
+    if (firstClickHappened) {
         operator.target.style.cssText = "background-color: #fce2bb";
         lastButtonClicked = operator.target;
         lastClickWasDigit = false;
         lastClickWasOperator = true;
-        number1 = Number(screenText.textContent);
-        console.log(number1);
         operatorSign = operator.target.textContent;
-        console.log(operatorSign);
     }
 }
 
 function add(num1, num2) {
-    console.log(num1 + num2);
+    return num1 + num2;
 }
 
 function subtract(num1, num2) {
-    console.log(num1 - num2);
+    return num1 - num2;
 }
 
 function multiply(num1, num2) {
-    console.log(num1 * num2);
+    return num1 * num2;
 }
 
 function divide(num1, num2) {
-    console.log(num1 / num2);
+    return num1 / num2;
 }
 
 function operate(num1, operator, num2) {
     if (operator === "+") {
-        add(num1, num2);
+        return add(num1, num2);
     } else if (operator === "*") {
-        multiply(num1, num2);
+        return multiply(num1, num2);
     } else if (operator === "-") {
-        subtract(num1, num2);
+        return subtract(num1, num2);
     } else {
-        divide(num1, num2);
+        return divide(num1, num2);
     }
 }
