@@ -1,22 +1,45 @@
 let number1 = 3;
 let operatorTest = "+";
 let number2 = 5;
+let screenText = document.getElementById("screenText");
+let lastClickWasDigit = false;
+let lastClickWasOperator = false;
+let firstClickHappened = false;
+let lastButtonClicked = document.getElementById("clearButton");
+
 let numberButtons = document.getElementsByClassName("numberButton");
 let functionButtons = document.getElementsByClassName("functionButton");
-
-let screenDigit1 = document.getElementById("screenDigit1");
-let screenOperator = document.getElementById("screenOperator");
-let screenDigit2 = document.getElementById("screenDigit2");
 
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
 
 function numberButtonClicked(digit) {
-   screenDigit1.textContent = screenDigit1.textContent + digit.target.textContent;
+    if (lastClickWasOperator === true) {
+        screenText.textContent = "";
+    }
+
+    if (screenText.clientWidth < 345) {    
+        screenText.textContent += digit.target.textContent;
+        lastClickWasDigit = true;
+        lastClickWasOperator = false;
+        firstClickHappened = true;
+        lastButtonClicked.removeAttribute("style");
+        console.log(screenText.clientWidth);
+    }
+    
 }
 
 function functionButtonClicked(operator) {
-    screenOperator.textContent = operator.target.textContent;
+    if (lastClickWasDigit === false) {
+        lastButtonClicked.removeAttribute("style");
+    }
+
+    if (firstClickHappened === true) {
+        operator.target.style.cssText = "background-color: #fce2bb";
+        lastButtonClicked = operator.target;
+        lastClickWasDigit = false;
+        lastClickWasOperator = true;
+    }
 }
 
 function add(num1, num2) {
@@ -46,5 +69,3 @@ function operate(num1, operatorTest, num2) {
         divide(num1, num2);
     }
 }
-
-operate(number1, operatorTest, number2);
