@@ -6,15 +6,18 @@ let lastClickWasOperator = false;
 let firstClickHappened = false;
 let firstNumber = true;
 let everythingCleared = true;
+let lastClickWasEquals = false;
 
 let lastButtonClicked = document.getElementById("clearButton");
 let screenText = document.getElementById("screenText");
 let numberButtons = document.getElementsByClassName("numberButton");
 let functionButtons = document.getElementsByClassName("functionButton");
 let clearButton = document.getElementById("clearButton");
+let equalsButton = document.getElementById("equalsButton");
 
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
+equalsButton.addEventListener("click", equalsButtonClicked);
 clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
@@ -24,8 +27,9 @@ clearButton.addEventListener("click", () => {
     operatorSign = false;
     number2 = false;
     everythingCleared = true;
+    lastClickWasEquals = false;
 
-    if (screenText.hasChildNodes) {
+    if (screenText.hasChildNodes()) {
         screenText.removeChild(tooBigSpan);
     }
 
@@ -46,6 +50,20 @@ function numberButtonClicked(digit) {
         lastClickWasOperator = false;
         firstClickHappened = true;
         lastButtonClicked.removeAttribute("style");
+    }
+
+    if (lastClickWasEquals) {
+        screenText.textContent = "";
+        firstNumber = true;
+        number1 = false;
+        operatorSign = false;
+        number2 = false;
+        everythingCleared = true;
+        screenText.textContent += digit.target.textContent;
+        lastClickWasDigit = true;
+        lastClickWasOperator = false;
+        firstClickHappened = true;
+        lastClickWasEquals = false;
     }
 }
 
@@ -90,6 +108,36 @@ function functionButtonClicked(operator) {
         lastClickWasDigit = false;
         lastClickWasOperator = true;
         operatorSign = operator.target.textContent;
+    }
+}
+
+function equalsButtonClicked() {
+    if (number1 !== false && operatorSign !== false) {
+        number2 = Number(screenText.textContent);
+    }
+
+    if (number1 !== false && operatorSign !== false && number2 !== false && lastClickWasDigit) {
+        number1 = operate(number1, operatorSign, number2);
+        screenText.textContent = number1;
+        firstNumber = false;
+        lastClickWasDigit = false;
+        lastClickWasEquals = true;
+
+        if (screenText.clientWidth > 350) {
+            screenText.textContent = "";
+            let tooBigSpan = document.createElement("span");
+            screenText.appendChild(tooBigSpan);
+            tooBigSpan.style.display = "inline";
+            tooBigSpan.textContent = "TOO BIG!";
+            lastClickWasDigit = false;
+            lastClickWasOperator = false;
+            firstNumber = true;
+            number1 = false;
+            operatorSign = false;
+            number2 = false;
+            firstClickHappened = false;
+            everythingCleared = false;
+        }
     }
 }
 
