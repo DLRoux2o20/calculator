@@ -1,5 +1,5 @@
 let number1 = 3;
-let operatorTest = "+";
+let operatorSign = "+";
 let number2 = 5;
 let screenText = document.getElementById("screenText");
 let lastClickWasDigit = false;
@@ -31,9 +31,7 @@ function numberButtonClicked(digit) {
         lastClickWasOperator = false;
         firstClickHappened = true;
         lastButtonClicked.removeAttribute("style");
-        console.log(screenText.clientWidth);
     }
-    
 }
 
 function functionButtonClicked(operator) {
@@ -46,6 +44,10 @@ function functionButtonClicked(operator) {
         lastButtonClicked = operator.target;
         lastClickWasDigit = false;
         lastClickWasOperator = true;
+        number1 = Number(screenText.textContent);
+        console.log(number1);
+        operatorSign = operator.target.textContent;
+        console.log(operatorSign);
     }
 }
 
@@ -65,12 +67,12 @@ function divide(num1, num2) {
     console.log(num1 / num2);
 }
 
-function operate(num1, operatorTest, num2) {
-    if (operatorTest === "+") {
+function operate(num1, operator, num2) {
+    if (operator === "+") {
         add(num1, num2);
-    } else if (operatorTest === "*") {
+    } else if (operator === "*") {
         multiply(num1, num2);
-    } else if (operatorTest === "-") {
+    } else if (operator === "-") {
         subtract(num1, num2);
     } else {
         divide(num1, num2);
