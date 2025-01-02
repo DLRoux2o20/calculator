@@ -9,9 +9,16 @@ let lastButtonClicked = document.getElementById("clearButton");
 
 let numberButtons = document.getElementsByClassName("numberButton");
 let functionButtons = document.getElementsByClassName("functionButton");
+let clearButton = document.getElementById("clearButton");
 
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
+clearButton.addEventListener("click", () => {
+    screenText.textContent = "";
+    lastClickWasDigit = false;
+    lastClickWasOperator = false;
+    firstClickHappened = false;
+});
 
 function numberButtonClicked(digit) {
     if (lastClickWasOperator === true) {
