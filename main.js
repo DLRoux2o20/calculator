@@ -1,13 +1,13 @@
 let number1 = false;
 let operatorSign = false;
 let number2 = false;
-let screenText = document.getElementById("screenText");
 let lastClickWasDigit = false;
 let lastClickWasOperator = false;
 let firstClickHappened = false;
 let firstNumber = true;
-let lastButtonClicked = document.getElementById("clearButton");
 
+let lastButtonClicked = document.getElementById("clearButton");
+let screenText = document.getElementById("screenText");
 let numberButtons = document.getElementsByClassName("numberButton");
 let functionButtons = document.getElementsByClassName("functionButton");
 let clearButton = document.getElementById("clearButton");
@@ -18,11 +18,14 @@ clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
     lastClickWasOperator = false;
-    firstClickHappened = false;
     firstNumber = true;
     number1 = false;
     operatorSign = false;
     number2 = false;
+    if (firstClickHappened) {
+        lastButtonClicked.removeAttribute("style");
+    }
+    firstClickHappened = false;
 });
 
 function numberButtonClicked(digit) {
@@ -50,12 +53,12 @@ function functionButtonClicked(operator) {
             number2 = Number(screenText.textContent);
             firstNumber = true;
         }
-    }
 
-    if (number1 !== false && operatorSign !== false && number2 !== false) {
-        number1 = operate(number1, operatorSign, number2);
-        screenText.textContent = number1;
-        firstNumber = false;
+        if (number1 !== false && operatorSign !== false && number2 !== false) {
+            number1 = operate(number1, operatorSign, number2);
+            screenText.textContent = number1;
+            firstNumber = false;
+        }
     }
 
     if (firstClickHappened) {
