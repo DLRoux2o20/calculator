@@ -5,6 +5,7 @@ let lastClickWasDigit = false;
 let lastClickWasOperator = false;
 let firstClickHappened = false;
 let firstNumber = true;
+let everythingCleared = true;
 
 let lastButtonClicked = document.getElementById("clearButton");
 let screenText = document.getElementById("screenText");
@@ -22,6 +23,12 @@ clearButton.addEventListener("click", () => {
     number1 = false;
     operatorSign = false;
     number2 = false;
+    everythingCleared = true;
+
+    if (screenText.hasChildNodes) {
+        screenText.removeChild(tooBigSpan);
+    }
+
     if (firstClickHappened) {
         lastButtonClicked.removeAttribute("style");
     }
@@ -33,7 +40,7 @@ function numberButtonClicked(digit) {
         screenText.textContent = "";
     }
 
-    if (screenText.clientWidth < 345) {    
+    if (screenText.clientWidth < 345 && everythingCleared) {    
         screenText.textContent += digit.target.textContent;
         lastClickWasDigit = true;
         lastClickWasOperator = false;
@@ -58,6 +65,22 @@ function functionButtonClicked(operator) {
             number1 = operate(number1, operatorSign, number2);
             screenText.textContent = number1;
             firstNumber = false;
+
+            if (screenText.clientWidth > 350) {
+                screenText.textContent = "";
+                let tooBigSpan = document.createElement("span");
+                screenText.appendChild(tooBigSpan);
+                tooBigSpan.style.display = "inline";
+                tooBigSpan.textContent = "TOO BIG!";
+                lastClickWasDigit = false;
+                lastClickWasOperator = false;
+                firstNumber = true;
+                number1 = false;
+                operatorSign = false;
+                number2 = false;
+                firstClickHappened = false;
+                everythingCleared = false;
+            }
         }
     }
 

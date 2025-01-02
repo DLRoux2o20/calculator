@@ -56,8 +56,7 @@ body {
     color: white;
     font-size: 70px;
     font-weight: bold;
-    display: inline-block;
-    width: min-content;    
+    display: inline-block;   
 }
 
 #container1 {
