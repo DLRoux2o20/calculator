@@ -68,7 +68,7 @@ function numberButtonClicked(digit) {
 }
 
 function functionButtonClicked(operator) {
-    if (!lastClickWasDigit) {
+    if (!lastClickWasDigit && !lastClickWasEquals) {
         lastButtonClicked.removeAttribute("style");
     } else {
         if (firstNumber) {
@@ -107,6 +107,7 @@ function functionButtonClicked(operator) {
         lastButtonClicked = operator.target;
         lastClickWasDigit = false;
         lastClickWasOperator = true;
+        lastClickWasEquals = false;
         operatorSign = operator.target.textContent;
     }
 }
@@ -119,7 +120,8 @@ function equalsButtonClicked() {
     if (number1 !== false && operatorSign !== false && number2 !== false && lastClickWasDigit) {
         number1 = operate(number1, operatorSign, number2);
         screenText.textContent = number1;
-        firstNumber = false;
+        firstNumber = true;
+        operatorSign = false;
         lastClickWasDigit = false;
         lastClickWasEquals = true;
 
