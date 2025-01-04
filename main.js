@@ -22,12 +22,12 @@ clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
     lastClickWasOperator = false;
+    lastClickWasEquals = false;
     firstNumber = true;
     number1 = false;
     operatorSign = false;
     number2 = false;
     everythingCleared = true;
-    lastClickWasEquals = false;
 
     if (screenText.hasChildNodes()) {
         screenText.removeChild(tooBigSpan);
@@ -68,7 +68,7 @@ function numberButtonClicked(digit) {
 }
 
 function functionButtonClicked(operator) {
-    if (!lastClickWasDigit && !lastClickWasEquals) {
+    if (lastClickWasOperator && !lastClickWasEquals) {
         lastButtonClicked.removeAttribute("style");
     } else {
         if (firstNumber) {
@@ -92,7 +92,17 @@ function functionButtonClicked(operator) {
                 tooBigSpan.textContent = "TOO BIG!";
                 lastClickWasDigit = false;
                 lastClickWasOperator = false;
-                firstNumber = true;
+                number1 = false;
+                operatorSign = false;
+                number2 = false;
+                firstClickHappened = false;
+                everythingCleared = false;
+            }
+
+            if (screenText.textContent === "Infinity") {
+                screenText.textContent = ";)";
+                lastClickWasDigit = false;
+                lastClickWasOperator = false;
                 number1 = false;
                 operatorSign = false;
                 number2 = false;
@@ -133,7 +143,20 @@ function equalsButtonClicked() {
             tooBigSpan.textContent = "TOO BIG!";
             lastClickWasDigit = false;
             lastClickWasOperator = false;
+            lastClickWasEquals = false;
             firstNumber = true;
+            number1 = false;
+            operatorSign = false;
+            number2 = false;
+            firstClickHappened = false;
+            everythingCleared = false;
+        }
+
+        if (screenText.textContent === "Infinity") {
+            screenText.textContent = ";)";
+            lastClickWasDigit = false;
+            lastClickWasOperator = false;
+            lastClickWasEquals = false;
             number1 = false;
             operatorSign = false;
             number2 = false;
