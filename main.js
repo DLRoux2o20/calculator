@@ -1,5 +1,3 @@
-import Decimal from '../decimal.js/decimal.mjs';
-
 let number1 = false;
 let operatorSign = false;
 let number2 = false;
@@ -93,8 +91,8 @@ function functionButtonClicked(operator) {
                 if (amountOfDigits > 9) {
                     let number1Rounded = Math.floor(number1);
                     let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
-                    number1 = new Decimal(number1).toFixed(9 - amountOfDigitsBeforeDecimal);
-                    number1 = Number(number1);
+                    let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
+                    number1 = Math.round((number1 + Number.EPSILON) * multiplier) / multiplier;
                     screenText.textContent = number1;
                 }
             }
@@ -157,8 +155,8 @@ function equalsButtonClicked() {
             if (amountOfDigits > 9) {
                 let number1Rounded = Math.floor(number1);
                 let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
-                number1 = new Decimal(number1).toFixed(9 - amountOfDigitsBeforeDecimal);
-                number1 = Number(number1);
+                let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
+                number1 = Math.round((number1 + Number.EPSILON) * multiplier) / multiplier;
                 screenText.textContent = number1;
             }
         }
