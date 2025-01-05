@@ -1,3 +1,5 @@
+import Decimal from '../decimal.js/decimal.mjs';
+
 let number1 = false;
 let operatorSign = false;
 let number2 = false;
@@ -84,7 +86,19 @@ function functionButtonClicked(operator) {
             screenText.textContent = number1;
             firstNumber = false;
 
-            if (screenText.clientWidth > 350) {
+            if (!Number.isInteger(number1)) {
+                let numDigitsWidth = screenText.clientWidth - 17.5;
+                let amountOfDigits = Math.floor(numDigitsWidth / 35);
+
+                if (amountOfDigits > 9) {
+                    let number1Rounded = Math.floor(number1);
+                    let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
+                    number1 = new Decimal(number1).toFixed(9 - amountOfDigitsBeforeDecimal);
+                    screenText.textContent = number1;
+                }
+            }
+
+            if (screenText.clientWidth > 350 && Number.isInteger(number1)) {
                 screenText.textContent = "";
                 let tooBigSpan = document.createElement("span");
                 screenText.appendChild(tooBigSpan);
