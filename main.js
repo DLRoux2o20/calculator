@@ -94,6 +94,7 @@ function functionButtonClicked(operator) {
                     let number1Rounded = Math.floor(number1);
                     let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
                     number1 = new Decimal(number1).toFixed(9 - amountOfDigitsBeforeDecimal);
+                    number1 = Number(number1);
                     screenText.textContent = number1;
                 }
             }
@@ -148,6 +149,19 @@ function equalsButtonClicked() {
         operatorSign = false;
         lastClickWasDigit = false;
         lastClickWasEquals = true;
+
+        if (!Number.isInteger(number1)) {
+            let numDigitsWidth = screenText.clientWidth - 17.5;
+            let amountOfDigits = Math.floor(numDigitsWidth / 35);
+
+            if (amountOfDigits > 9) {
+                let number1Rounded = Math.floor(number1);
+                let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
+                number1 = new Decimal(number1).toFixed(9 - amountOfDigitsBeforeDecimal);
+                number1 = Number(number1);
+                screenText.textContent = number1;
+            }
+        }
 
         if (screenText.clientWidth > 350) {
             screenText.textContent = "";
