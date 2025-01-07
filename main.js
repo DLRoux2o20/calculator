@@ -1,6 +1,7 @@
 let number1 = false;
 let operatorSign = false;
 let number2 = false;
+let savedNumber1 = false;
 let lastClickWasDigit = false;
 let lastClickWasOperator = false;
 let firstClickHappened = false;
@@ -27,6 +28,7 @@ clearButton.addEventListener("click", () => {
     number1 = false;
     operatorSign = false;
     number2 = false;
+    savedNumber1 = false;
     everythingCleared = true;
 
     if (screenText.hasChildNodes()) {
@@ -85,15 +87,28 @@ function functionButtonClicked(operator) {
             firstNumber = false;
 
             if (!Number.isInteger(number1)) {
-                let numDigitsWidth = screenText.clientWidth - 17.5;
-                let amountOfDigits = Math.floor(numDigitsWidth / 35);
-
-                if (amountOfDigits > 9) {
-                    let number1Rounded = Math.floor(number1);
-                    let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
-                    let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
-                    number1 = Math.round((number1 + Number.EPSILON) * multiplier) / multiplier;
-                    screenText.textContent = number1;
+                if (number1 < 0) {
+                    let numDigitsWidth = screenText.clientWidth - 41;
+                    let amountOfDigits = Math.floor(numDigitsWidth / 35);
+    
+                    if (amountOfDigits > 9) {
+                        savedNumber1 = number1;
+                        let number1Rounded = Math.floor(savedNumber1);
+                        let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
+                        let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal + 1);
+                        screenText.textContent = Math.round((savedNumber1 + Number.EPSILON) * multiplier) / multiplier;
+                    }
+                } else {
+                    let numDigitsWidth = screenText.clientWidth - 18;
+                    let amountOfDigits = Math.floor(numDigitsWidth / 35);
+    
+                    if (amountOfDigits > 9) {
+                        savedNumber1 = number1;
+                        let number1Rounded = Math.floor(savedNumber1);
+                        let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
+                        let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
+                        screenText.textContent = Math.round((savedNumber1 + Number.EPSILON) * multiplier) / multiplier;
+                    }
                 }
             }
 
@@ -149,19 +164,32 @@ function equalsButtonClicked() {
         lastClickWasEquals = true;
 
         if (!Number.isInteger(number1)) {
-            let numDigitsWidth = screenText.clientWidth - 17.5;
-            let amountOfDigits = Math.floor(numDigitsWidth / 35);
+            if (number1 < 0) {
+                let numDigitsWidth = screenText.clientWidth - 41;
+                let amountOfDigits = Math.floor(numDigitsWidth / 35);
 
-            if (amountOfDigits > 9) {
-                let number1Rounded = Math.floor(number1);
-                let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
-                let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
-                number1 = Math.round((number1 + Number.EPSILON) * multiplier) / multiplier;
-                screenText.textContent = number1;
+                if (amountOfDigits > 9) {
+                    savedNumber1 = number1;
+                    let number1Rounded = Math.floor(savedNumber1);
+                    let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
+                    let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal + 1);
+                    screenText.textContent = Math.round((savedNumber1 + Number.EPSILON) * multiplier) / multiplier;
+                }
+            } else {
+                let numDigitsWidth = screenText.clientWidth - 18;
+                let amountOfDigits = Math.floor(numDigitsWidth / 35);
+
+                if (amountOfDigits > 9) {
+                    savedNumber1 = number1;
+                    let number1Rounded = Math.floor(savedNumber1);
+                    let amountOfDigitsBeforeDecimal = number1Rounded.toString().length;
+                    let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
+                    screenText.textContent = Math.round((savedNumber1 + Number.EPSILON) * multiplier) / multiplier;
+                }
             }
         }
 
-        if (screenText.clientWidth > 350) {
+        if (screenText.clientWidth > 360) {
             screenText.textContent = "";
             let tooBigSpan = document.createElement("span");
             screenText.appendChild(tooBigSpan);
