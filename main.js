@@ -142,6 +142,24 @@ function functionButtonClicked(operator) {
                 everythingCleared = false;
             }
 
+            if (screenText.textContent.includes("e")) {
+                screenText.textContent = "";
+                let tooSmallSpan = document.createElement("span");
+                screenText.appendChild(tooSmallSpan);
+                tooSmallSpan.style.display = "inline";
+                tooSmallSpan.style.fontSize = "55px";
+                tooSmallSpan.textContent = "TOO SMALL!";
+                lastClickWasDigit = false;
+                lastClickWasOperator = false;
+                lastClickWasEquals = false;
+                firstNumber = true;
+                number1 = false;
+                operatorSign = false;
+                number2 = false;
+                firstClickHappened = false;
+                everythingCleared = false;
+            }
+
             if (screenText.textContent === "Infinity") {
                 screenText.textContent = ";)";
                 lastClickWasDigit = false;
@@ -225,6 +243,24 @@ function equalsButtonClicked() {
             everythingCleared = false;
         }
 
+        if (screenText.textContent.includes("e")) {
+            screenText.textContent = "";
+            let tooSmallSpan = document.createElement("span");
+            screenText.appendChild(tooSmallSpan);
+            tooSmallSpan.style.display = "inline";
+            tooSmallSpan.style.fontSize = "55px";
+            tooSmallSpan.textContent = "TOO SMALL!";
+            lastClickWasDigit = false;
+            lastClickWasOperator = false;
+            lastClickWasEquals = false;
+            firstNumber = true;
+            number1 = false;
+            operatorSign = false;
+            number2 = false;
+            firstClickHappened = false;
+            everythingCleared = false;
+        }
+
         if (screenText.textContent === "Infinity") {
             screenText.textContent = ";)";
             lastClickWasDigit = false;
@@ -240,16 +276,19 @@ function equalsButtonClicked() {
 }
 
 function decimalButtonClicked() {
+    lastClickWasDecimal = true;
+
     if (screenText.textContent.charAt(0) == "" || lastClickWasOperator) {
         screenText.textContent = "0.";
         lastButtonClicked.removeAttribute("style");
     }
 
-    if (!screenText.textContent.includes(".")) {
+    if (!screenText.textContent.includes(".") && firstClickHappened) {
         screenText.textContent += ".";
+    } else {
+        lastClickWasDecimal = false;
     }
 
-    lastClickWasDecimal = true;
     lastClickWasPercentage = false;
 }
 
@@ -280,6 +319,24 @@ function percentageButtonClicked() {
             let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
             screenText.textContent = Math.round((savedNumber + Number.EPSILON) * multiplier) / multiplier;
         }
+    }
+
+    if (screenText.textContent.includes("e")) {
+        screenText.textContent = "";
+        let tooSmallSpan = document.createElement("span");
+        screenText.appendChild(tooSmallSpan);
+        tooSmallSpan.style.display = "inline";
+        tooSmallSpan.style.fontSize = "55px";
+        tooSmallSpan.textContent = "TOO SMALL!";
+        lastClickWasDigit = false;
+        lastClickWasOperator = false;
+        lastClickWasEquals = false;
+        firstNumber = true;
+        number1 = false;
+        operatorSign = false;
+        number2 = false;
+        firstClickHappened = false;
+        everythingCleared = false;
     }
 
     lastClickWasPercentage = true;
