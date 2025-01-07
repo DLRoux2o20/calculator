@@ -9,6 +9,7 @@ let firstNumber = true;
 let everythingCleared = true;
 let lastClickWasEquals = false;
 let lastClickWasDecimal = false;
+let lastClickWasPercentage = false;
 
 let lastButtonClicked = document.getElementById("clearButton");
 let screenText = document.getElementById("screenText");
@@ -17,22 +18,25 @@ let functionButtons = document.getElementsByClassName("functionButton");
 let clearButton = document.getElementById("clearButton");
 let equalsButton = document.getElementById("equalsButton");
 let decimalButton = document.getElementById("decimalButton");
+let percentageButton = document.getElementById("percentageButton");
 
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
 equalsButton.addEventListener("click", equalsButtonClicked);
 decimalButton.addEventListener("click", decimalButtonClicked);
+percentageButton.addEventListener("click", percentageButtonClicked);
 clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
     lastClickWasOperator = false;
     lastClickWasEquals = false;
+    lastClickWasDecimal = false;
+    lastClickWasPercentage = false;
     firstNumber = true;
     number1 = false;
     operatorSign = false;
     number2 = false;
     savedNumber1 = false;
-    lastClickWasDecimal = false;
     everythingCleared = true;
 
     if (screenText.hasChildNodes()) {
@@ -57,6 +61,7 @@ function numberButtonClicked(digit) {
         lastClickWasDigit = true;
         lastClickWasOperator = false;
         lastClickWasDecimal = false;
+        lastClickWasPercentage = false;
         firstClickHappened = true;
         lastButtonClicked.removeAttribute("style");
     }
@@ -72,6 +77,7 @@ function numberButtonClicked(digit) {
         lastClickWasDigit = true;
         lastClickWasOperator = false;
         lastClickWasDecimal = false;
+        lastClickWasPercentage = false;
         firstClickHappened = true;
         lastClickWasEquals = false;
     }
@@ -128,6 +134,7 @@ function functionButtonClicked(operator) {
                 tooBigSpan.textContent = "TOO BIG!";
                 lastClickWasDigit = false;
                 lastClickWasOperator = false;
+                lastClickWasPercentage = false;
                 number1 = false;
                 operatorSign = false;
                 number2 = false;
@@ -139,6 +146,7 @@ function functionButtonClicked(operator) {
                 screenText.textContent = ";)";
                 lastClickWasDigit = false;
                 lastClickWasOperator = false;
+                lastClickWasPercentage = false;
                 number1 = false;
                 operatorSign = false;
                 number2 = false;
@@ -155,6 +163,7 @@ function functionButtonClicked(operator) {
         lastClickWasOperator = true;
         lastClickWasDecimal = false;
         lastClickWasEquals = false;
+        lastClickWasPercentage = false;
         operatorSign = operator.target.textContent;
     }
 }
@@ -171,6 +180,7 @@ function equalsButtonClicked() {
         operatorSign = false;
         lastClickWasDigit = false;
         lastClickWasEquals = true;
+        lastClickWasPercentage = false;
 
         if (!Number.isInteger(number1)) {
             if (number1 < 0) {
@@ -240,6 +250,39 @@ function decimalButtonClicked() {
     }
 
     lastClickWasDecimal = true;
+    lastClickWasPercentage = false;
+}
+
+function percentageButtonClicked() {
+    if ((lastClickWasDigit || lastClickWasEquals) && !lastClickWasPercentage && !lastClickWasDecimal) {
+        screenText.textContent = Number(screenText.textContent) / 100;
+    }
+
+    if (number1 < 0) {
+        let numDigitsWidth = screenText.clientWidth - 41;
+        let amountOfDigits = Math.floor(numDigitsWidth / 35);
+
+        if (amountOfDigits > 9) {
+            let savedNumber = Number(screenText.textContent);
+            let numberRounded = Math.floor(savedNumber);
+            let amountOfDigitsBeforeDecimal = numberRounded.toString().length;
+            let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal + 1);
+            screenText.textContent = Math.round((savedNumber + Number.EPSILON) * multiplier) / multiplier;
+        }
+    } else {
+        let numDigitsWidth = screenText.clientWidth - 18;
+        let amountOfDigits = Math.floor(numDigitsWidth / 35);
+
+        if (amountOfDigits > 9) {
+            let savedNumber = Number(screenText.textContent);
+            let numberRounded = Math.floor(savedNumber);
+            let amountOfDigitsBeforeDecimal = numberRounded.toString().length;
+            let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
+            screenText.textContent = Math.round((savedNumber + Number.EPSILON) * multiplier) / multiplier;
+        }
+    }
+
+    lastClickWasPercentage = true;
 }
 
 function add(num1, num2) {
