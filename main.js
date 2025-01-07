@@ -285,8 +285,6 @@ function decimalButtonClicked() {
 
     if (!screenText.textContent.includes(".") && firstClickHappened) {
         screenText.textContent += ".";
-    } else {
-        lastClickWasDecimal = false;
     }
 
     lastClickWasPercentage = false;
