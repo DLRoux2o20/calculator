@@ -8,6 +8,7 @@ let firstClickHappened = false;
 let firstNumber = true;
 let everythingCleared = true;
 let lastClickWasEquals = false;
+let lastClickWasDecimal = false;
 
 let lastButtonClicked = document.getElementById("clearButton");
 let screenText = document.getElementById("screenText");
@@ -15,10 +16,12 @@ let numberButtons = document.getElementsByClassName("numberButton");
 let functionButtons = document.getElementsByClassName("functionButton");
 let clearButton = document.getElementById("clearButton");
 let equalsButton = document.getElementById("equalsButton");
+let decimalButton = document.getElementById("decimalButton");
 
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
 equalsButton.addEventListener("click", equalsButtonClicked);
+decimalButton.addEventListener("click", decimalButtonClicked);
 clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
@@ -29,6 +32,7 @@ clearButton.addEventListener("click", () => {
     operatorSign = false;
     number2 = false;
     savedNumber1 = false;
+    lastClickWasDecimal = false;
     everythingCleared = true;
 
     if (screenText.hasChildNodes()) {
@@ -42,7 +46,9 @@ clearButton.addEventListener("click", () => {
 });
 
 function numberButtonClicked(digit) {
-    if (lastClickWasOperator) {
+    if (lastClickWasOperator && lastClickWasDecimal) {
+        screenText.textContent = "0.";
+    } else if (lastClickWasOperator) {
         screenText.textContent = "";
     }
 
@@ -50,6 +56,7 @@ function numberButtonClicked(digit) {
         screenText.textContent += digit.target.textContent;
         lastClickWasDigit = true;
         lastClickWasOperator = false;
+        lastClickWasDecimal = false;
         firstClickHappened = true;
         lastButtonClicked.removeAttribute("style");
     }
@@ -64,6 +71,7 @@ function numberButtonClicked(digit) {
         screenText.textContent += digit.target.textContent;
         lastClickWasDigit = true;
         lastClickWasOperator = false;
+        lastClickWasDecimal = false;
         firstClickHappened = true;
         lastClickWasEquals = false;
     }
@@ -145,6 +153,7 @@ function functionButtonClicked(operator) {
         lastButtonClicked = operator.target;
         lastClickWasDigit = false;
         lastClickWasOperator = true;
+        lastClickWasDecimal = false;
         lastClickWasEquals = false;
         operatorSign = operator.target.textContent;
     }
@@ -218,6 +227,19 @@ function equalsButtonClicked() {
             everythingCleared = false;
         }
     }
+}
+
+function decimalButtonClicked() {
+    if (screenText.textContent.charAt(0) == "" || lastClickWasOperator) {
+        screenText.textContent = "0.";
+        lastButtonClicked.removeAttribute("style");
+    }
+
+    if (!screenText.textContent.includes(".")) {
+        screenText.textContent += ".";
+    }
+
+    lastClickWasDecimal = true;
 }
 
 function add(num1, num2) {
