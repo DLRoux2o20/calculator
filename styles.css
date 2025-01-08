@@ -64,8 +64,8 @@ body {
     width: 500px;
     height: 670px;
     position: absolute;
-    top: 14vh;
-    right: 37vw;
+    top: calc((100vh - 670px) / 2);
+    right: calc((100vw - 500px) / 2);
     padding-inline: 20px;
     padding-block: 20px;
 }
@@ -98,4 +98,28 @@ body {
 
 #decimalButton {
     background-color: #14a9ff;
+}
+
+@media only screen and (max-height: 730px) {
+    #container1 {
+        transform: scale(0.8);
+    }
+}
+
+@media only screen and (max-height: 580px) {
+    #container1 {
+        transform: scale(0.6);
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    #container1 {
+        transform: scale(0.8);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    #container1 {
+        transform: scale(0.6);
+    }
 }
