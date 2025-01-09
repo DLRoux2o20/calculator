@@ -56,17 +56,7 @@ function numberButtonClicked(digit) {
         screenText.textContent = "";
     }
 
-    if (screenText.clientWidth < 345 && everythingCleared) {    
-        screenText.textContent += digit.target.textContent;
-        lastClickWasDigit = true;
-        lastClickWasOperator = false;
-        lastClickWasDecimal = false;
-        lastClickWasPercentage = false;
-        firstClickHappened = true;
-        lastButtonClicked.removeAttribute("style");
-    }
-
-    if (lastClickWasEquals) {
+    if (lastClickWasEquals && !lastClickWasDecimal && !lastClickWasPercentage) {
         screenText.textContent = "";
         firstNumber = true;
         number1 = false;
@@ -80,6 +70,21 @@ function numberButtonClicked(digit) {
         lastClickWasPercentage = false;
         firstClickHappened = true;
         lastClickWasEquals = false;
+    }
+
+    if (screenText.textContent.includes(".") && lastClickWasPercentage) {
+        lastClickWasPercentage = true;
+    } else {
+        lastClickWasPercentage = false;
+    }
+
+    if (screenText.clientWidth < 345 && everythingCleared ) {    
+        screenText.textContent += digit.target.textContent;
+        lastClickWasDigit = true;
+        lastClickWasOperator = false;
+        lastClickWasDecimal = false;
+        firstClickHappened = true;
+        lastButtonClicked.removeAttribute("style");
     }
 }
 
@@ -281,18 +286,27 @@ function decimalButtonClicked() {
     if (screenText.textContent.charAt(0) == "" || lastClickWasOperator) {
         screenText.textContent = "0.";
         lastButtonClicked.removeAttribute("style");
+        lastClickWasPercentage = false;
     }
 
     if (!screenText.textContent.includes(".") && firstClickHappened) {
         screenText.textContent += ".";
+        lastClickWasPercentage = false;
+    } else {
+        lastClickWasPercentage = true;
     }
-
-    lastClickWasPercentage = false;
 }
 
 function percentageButtonClicked() {
     if ((lastClickWasDigit || lastClickWasEquals) && !lastClickWasPercentage && !lastClickWasDecimal) {
         screenText.textContent = Number(screenText.textContent) / 100;
+        lastClickWasPercentage = true;
+    }
+
+    if (lastClickWasEquals && lastClickWasDecimal && !lastClickWasPercentage) {
+        screenText.textContent = Number(screenText.textContent) / 100;
+        lastClickWasPercentage = true;
+        lastClickWasEquals = false;
     }
 
     if (number1 < 0) {
@@ -317,6 +331,7 @@ function percentageButtonClicked() {
             let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal);
             screenText.textContent = Math.round((savedNumber + Number.EPSILON) * multiplier) / multiplier;
         }
+        lastClickWasPercentage = true;
     }
 
     if (screenText.textContent.includes("e")) {
@@ -336,8 +351,6 @@ function percentageButtonClicked() {
         firstClickHappened = false;
         everythingCleared = false;
     }
-
-    lastClickWasPercentage = true;
 }
 
 function add(num1, num2) {
