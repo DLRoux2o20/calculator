@@ -19,12 +19,14 @@ let clearButton = document.getElementById("clearButton");
 let equalsButton = document.getElementById("equalsButton");
 let decimalButton = document.getElementById("decimalButton");
 let percentageButton = document.getElementById("percentageButton");
+let plusMinusButton = document.getElementById("plusMinusButton");
 
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
 equalsButton.addEventListener("click", equalsButtonClicked);
 decimalButton.addEventListener("click", decimalButtonClicked);
 percentageButton.addEventListener("click", percentageButtonClicked);
+plusMinusButton.addEventListener("click", plusMinusButtonClicked);
 clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
@@ -344,6 +346,29 @@ function percentageButtonClicked() {
         number2 = false;
         firstClickHappened = false;
         everythingCleared = false;
+    }
+}
+
+function plusMinusButtonClicked() {
+    if (!lastClickWasOperator && screenText.textContent !== "0" && firstClickHappened) {
+        if (Number(screenText.textContent) > 0) {
+            screenText.textContent = Number(screenText.textContent) * -1;
+
+            if (screenText.clientWidth > 360) {
+                let numDigitsWidth = screenText.clientWidth - 41;
+                let amountOfDigits = Math.floor(numDigitsWidth / 35);
+            
+                    if (amountOfDigits > 9) {
+                        let savedNumber = Number(screenText.textContent);
+                        let numberRounded = Math.floor(savedNumber);
+                        let amountOfDigitsBeforeDecimal = numberRounded.toString().length;
+                        let multiplier = 10 ** (9 - amountOfDigitsBeforeDecimal + 1);
+                        screenText.textContent = Math.round((savedNumber + Number.EPSILON) * multiplier) / multiplier;
+                    }
+            }
+        } else  {
+            screenText.textContent = Number(screenText.textContent) * -1;
+        }
     }
 }
 
