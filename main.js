@@ -298,7 +298,7 @@ function decimalButtonClicked() {
 }
 
 function percentageButtonClicked() {
-    if (!percentageClicked && screenText.textContent !== "0." && !lastClickWasOperator) {
+    if (!percentageClicked && screenText.textContent !== "0." && !lastClickWasOperator && firstClickHappened) {
         screenText.textContent = Number(screenText.textContent) / 100;
         percentageClicked = true;
     }
