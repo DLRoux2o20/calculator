@@ -21,6 +21,7 @@ let decimalButton = document.getElementById("decimalButton");
 let percentageButton = document.getElementById("percentageButton");
 let plusMinusButton = document.getElementById("plusMinusButton");
 
+document.addEventListener("keyup", keyPressed);
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
 Array.from(functionButtons).forEach(item => item.addEventListener("click", functionButtonClicked));
 equalsButton.addEventListener("click", equalsButtonClicked);
@@ -397,5 +398,27 @@ function operate(num1, operator, num2) {
         return subtract(num1, num2);
     } else {
         return divide(num1, num2);
+    }
+}
+
+function keyPressed(key) {
+    if (key.code === `Digit${key.key}` || key.code === `Numpad${key.key}`) {
+        let digitClickEvent = new Event("click");
+        document.getElementById(`numberButton${key.key}`).dispatchEvent(digitClickEvent);
+    }
+
+    if (key.code === "NumpadMultiply" || key.code === "NumpadDivide" || key.code === "NumpadAdd" || key.code === "NumpadSubtract") {
+        let operatorClickEvent = new Event("click");
+        document.getElementById(`functionButton${key.key}`).dispatchEvent(operatorClickEvent);
+    }
+
+    if (key.code === "Equal") {
+        let equalsClickEvent = new Event("click");
+        equalsButton.dispatchEvent(equalsClickEvent);
+    }
+
+    if (key.code === "Period") {
+        let decimalClickEvent = new Event("click");
+        decimalButton.dispatchEvent(decimalClickEvent);
     }
 }

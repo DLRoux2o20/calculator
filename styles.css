@@ -88,7 +88,7 @@ body {
     padding-inline: 40px;
 }
 
-#zeroButton {
+#numberButton0 {
     width: calc((100% - 12px - 30px) / 2 + 8.4px);
 }
 
