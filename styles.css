@@ -88,16 +88,8 @@ body {
     padding-inline: 40px;
 }
 
-#numberButton0 {
-    width: calc((100% - 12px - 30px) / 2 + 8.4px);
-}
-
-#decimalButton, #equalsButton {
-    width: calc((100% - 12px - 30px) / 4);
-}
-
-#decimalButton {
-    background-color: #14a9ff;
+#decimalButton, #percentageButton {
+    background-color: #f1f1f1;
 }
 
 @media only screen and (max-height: 730px) {

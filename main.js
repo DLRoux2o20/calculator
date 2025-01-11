@@ -20,6 +20,7 @@ let equalsButton = document.getElementById("equalsButton");
 let decimalButton = document.getElementById("decimalButton");
 let percentageButton = document.getElementById("percentageButton");
 let plusMinusButton = document.getElementById("plusMinusButton");
+let backspaceButton = document.getElementById("backspaceButton");
 
 document.addEventListener("keyup", keyPressed);
 Array.from(numberButtons).forEach(item => item.addEventListener("click", numberButtonClicked));
@@ -28,6 +29,7 @@ equalsButton.addEventListener("click", equalsButtonClicked);
 decimalButton.addEventListener("click", decimalButtonClicked);
 percentageButton.addEventListener("click", percentageButtonClicked);
 plusMinusButton.addEventListener("click", plusMinusButtonClicked);
+backspaceButton.addEventListener("click", backspaceButtonClicked);
 clearButton.addEventListener("click", () => {
     screenText.textContent = "";
     lastClickWasDigit = false;
@@ -86,12 +88,6 @@ function numberButtonClicked(digit) {
 
     if (screenText.textContent.includes(".")) {
         decimalClicked = true;
-    }
-
-    if (screenText.textContent.includes(".") && percentageClicked) {                                                                               // Check
-        percentageClicked = true;
-    } else {
-        percentageClicked = false;
     }
 }
 
@@ -302,7 +298,7 @@ function decimalButtonClicked() {
 }
 
 function percentageButtonClicked() {
-    if (!percentageClicked && screenText.textContent !== "0.") {
+    if (!percentageClicked && screenText.textContent !== "0." && !lastClickWasOperator) {
         screenText.textContent = Number(screenText.textContent) / 100;
         percentageClicked = true;
     }
@@ -373,6 +369,17 @@ function plusMinusButtonClicked() {
     }
 }
 
+function backspaceButtonClicked() {
+    if (firstClickHappened && !lastClickWasOperator) {
+        screenText.textContent = screenText.textContent.slice(0, screenText.textContent.length - 1);
+        percentageClicked = false;
+    }
+
+    if (!screenText.textContent.includes(".")) {
+        decimalClicked = false;
+    }
+}
+
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -420,5 +427,10 @@ function keyPressed(key) {
     if (key.code === "Period") {
         let decimalClickEvent = new Event("click");
         decimalButton.dispatchEvent(decimalClickEvent);
+    }
+
+    if (key.code === "Backspace") {
+        let backspaceClickEvent = new Event("click");
+        backspaceButton.dispatchEvent(backspaceClickEvent);
     }
 }
