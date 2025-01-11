@@ -378,6 +378,21 @@ function backspaceButtonClicked() {
     if (!screenText.textContent.includes(".")) {
         decimalClicked = false;
     }
+
+    if (screenText.textContent === "") {
+        lastClickWasDigit = false;
+        lastClickWasOperator = false;
+        equalsClicked = false;
+        decimalClicked = false;
+        percentageClicked = false;
+        firstNumber = true;
+        number1 = false;
+        operatorSign = false;
+        number2 = false;
+        savedNumber1 = false;
+        everythingCleared = true;
+        firstClickHappened = false;
+    }
 }
 
 function add(num1, num2) {
