@@ -1,2 +1,1 @@
-# calculator
-calculator
+A basic calculator.
